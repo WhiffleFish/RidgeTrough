@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import datetime
 import logging
+import os
+import re
 
 # Data for a single year
 class CDFData():
@@ -253,7 +255,6 @@ def gradient(arr):
 
 
 def normalize(arr):
-    
     if not isinstance(arr,np.ndarray):
         arr = np.array(arr)
     
@@ -261,24 +262,24 @@ def normalize(arr):
 
 
 def date_to_day(date: tuple) -> int:
-        '''
-        INPUT date(tuple): (Year,Month,day)
-        OUTPUT day(int): 1-365
-            - Subtract 1 from output for day index
-        '''
-        return datetime.datetime(*date).timetuple().tm_yday
+    '''
+    INPUT date(tuple): (Year,Month,day)
+    OUTPUT day(int): 1-365
+        - Subtract 1 from output for day index
+    '''
+    return datetime.datetime(*date).timetuple().tm_yday
 
 
 def day_to_date(year, day, fmt=str):
-        '''
-        INPUT
-            year(int)
-            day(int): 1-365
-            fmt(dtype): str, tuple
-        OUTPUT date(str/tuple): Mon Day Year / (Mon,Day)
-        '''
-        dt = datetime.datetime(year, 1, 1) + datetime.timedelta(day - 1)
-        if fmt == str:
-            return dt.strftime(r'%b %d %Y')
-        elif fmt == tuple:
-            return (dt.month, dt.day)
+    '''
+    INPUT
+        year(int)
+        day(int): 1-365
+        fmt(dtype): str, tuple
+    OUTPUT date(str/tuple): Mon Day Year / (Mon,Day)
+    '''
+    dt = datetime.datetime(year, 1, 1) + datetime.timedelta(day - 1)
+    if fmt == str:
+        return dt.strftime(r'%b %d %Y')
+    elif fmt == tuple:
+        return (dt.month, dt.day)

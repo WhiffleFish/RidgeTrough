@@ -175,7 +175,7 @@ numpy = ">1.13.3"
 name = "colorama"
 version = "0.4.5"
 description = "Cross-platform colored terminal text."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -1207,6 +1207,23 @@ optional = false
 python-versions = ">= 3.7"
 
 [[package]]
+name = "tqdm"
+version = "4.64.1"
+description = "Fast, Extensible Progress Meter"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+
+[package.dependencies]
+colorama = {version = "*", markers = "platform_system == \"Windows\""}
+
+[package.extras]
+dev = ["py-make (>=0.1.0)", "twine", "wheel"]
+notebook = ["ipywidgets (>=6)"]
+slack = ["slack-sdk"]
+telegram = ["requests"]
+
+[[package]]
 name = "traitlets"
 version = "5.5.0"
 description = ""
@@ -1278,7 +1295,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "flake8 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "3779cbeb535e2d5cc6f022318735f1a37137def526ae99b728bcedb353b95a3a"
+content-hash = "89bbfb0765cbea2c734d3289e8fcbb17430442fe5ac1b2db0802966e7734963d"
 
 [metadata.files]
 anyio = []
@@ -1447,6 +1464,7 @@ tomli = [
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
 tornado = []
+tqdm = []
 traitlets = []
 typing-extensions = []
 wcwidth = [

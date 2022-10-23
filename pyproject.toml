@@ -12,6 +12,7 @@ matplotlib = "^3.6.1"
 cftime = "^1.6.2"
 Cartopy = "^0.21.0"
 scipy = "^1.9.3"
+tqdm = "^4.64.1"
 
 [tool.poetry.dev-dependencies]
 jupyter = "^1.0.0"
