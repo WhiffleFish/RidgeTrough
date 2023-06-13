@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import datetime
 import logging
-import os
-import re
 
 # Data for a single year
 class CDFData():

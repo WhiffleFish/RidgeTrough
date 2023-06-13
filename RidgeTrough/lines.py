@@ -114,3 +114,8 @@ class FullCDFData():
     
     def update_max_lines(self, sigma):
         self.grad_lines = max_grads(self.grads, sigma=sigma)
+
+
+class PeakFinder():
+    def __init__(self):
+        pass
