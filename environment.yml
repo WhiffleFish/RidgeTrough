@@ -1,0 +1,14 @@
+name: RidgeTrough
+channels:
+  - defaults
+dependencies:
+  - python
+  - matplotlib
+  - numpy
+  - netcdf4
+  - cartopy
+  - scipy
+  - tqdm
+  - ipykernel
+  - jupyterlab
+  - ipympl
