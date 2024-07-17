@@ -227,7 +227,7 @@ class CritPoints:
         return fig, self.plot_ax(ax, day, level)
 
     def plot_ax(self, ax, day, level):
-        ax.contourf(self.data.lons, self.data.lats, self.data.hgts[day,level,...], cmap='YlOrRd', levels=10)
+        ctr = ax.contourf(self.data.lons, self.data.lats, self.data.hgts[day,level,...], cmap='YlOrRd', levels=100)
         ax.plot(self.data.lons, self.grad_lines[day, level])
         ax.scatter(
             self.trough_lons[day][level], 
@@ -239,14 +239,14 @@ class CritPoints:
             self.peak_lats[day][level],
             marker='x',s=100, c='purple'
         )
-        return ax
+        return ax, ctr
 
     def plot_grads(self, day, level):
         fig, ax = plt.subplots()
         return fig, self.plot_grads_ax(ax, day, level)
     
     def plot_grads_ax(self, ax, day, level):
-        ax.contourf(self.data.lons, self.data.lats, self.data.grads[day,level,...], levels=10)
+        ctr = ax.contourf(self.data.lons, self.data.lats, self.data.grads[day,level,...], levels=100)
         ax.plot(self.data.lons, self.grad_lines[day, level])
         ax.scatter(
             self.trough_lons[day][level], 
@@ -258,5 +258,5 @@ class CritPoints:
             self.peak_lats[day][level],
             marker='x',s=100
         )
-        return ax
+        return ax, ctr
 
