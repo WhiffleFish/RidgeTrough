@@ -123,12 +123,16 @@ class FullCDFData():
         self.grad_lines = max_grads(self.grads, sigma=sigma)
 
 
-class CritPointFinder():
+# TODO: because lats go from 90 to 0, peaks are currently labeled as troughs & vice versa
+class CritPointFinder:
+    """
+    peaks/troughs indexed by [day][level][peak1, peak2, peak3, ...]
+    """
     def __init__(self, prominence=1.5, distance=4):
         self.prominence = prominence
         self.distance = distance
 
-    def __call__(self, data): # convenience method
+    def __call__(self, data):
         return self.find(data)
     
     def find(self, data):
@@ -178,3 +182,81 @@ def plot_crit_points(peaks, troughs, data, day, level):
     ax.scatter(peaks[day][level], data.grad_lines[day, level][peaks[day][level]], marker='x', s=100,color='purple')
     ax.axis('off')
     return fig, ax
+
+def px2lats(px):
+    return 90 - px * 2.5
+
+def px2lons(px):
+    return px * 2.5 
+
+def plot_crit_points2(peaks, troughs, data, day, level):
+    fig, ax = plt.subplots()
+    ax.contourf(data.lons, data.lats, data.hgts[day,level,...], cmap='YlOrRd', levels=10)
+    ax.scatter(
+        px2lons(troughs[day][level]), 
+        px2lats(data.grad_lines[day, level][troughs[day][level]]), 
+        marker='x',s=100)
+    ax.scatter(
+        px2lons(peaks[day][level]), 
+        px2lats(data.grad_lines[day, level][peaks[day][level]]), 
+        marker='x', s=100,color='purple')
+    # ax.axis('off')
+    return fig, ax
+
+def vvv2lons(vvv):
+    return [[px2lons(v) for v in vv] for vv in vvv]
+
+
+class CritPoints:
+    def __init__(self, data, troughs, peaks):
+        self.data = data
+        self.peak_lons = vvv2lons(peaks)
+        self.peak_lats = [[px2lats(data.grad_lines[day, level][peaks[day][level]]) for level in range(data.grad_lines.shape[1])] for day in range(data.grad_lines.shape[0])]
+        self.trough_lons = vvv2lons(troughs)
+        self.trough_lats = [[px2lats(data.grad_lines[day, level][troughs[day][level]]) for level in range(data.grad_lines.shape[1])] for day in range(data.grad_lines.shape[0])]
+        self.grad_lines = px2lats(data.grad_lines)
+
+    def peak_points(self, day, level):
+        return self.peak_lons[day][level], self.peak_lats[day][level]
+    
+    def trough_points(self, day, level):
+        return self.trough_lons[day][level], self.trough_lats[day][level]
+    
+    def plot(self, day, level):
+        fig, ax = plt.subplots()
+        return fig, self.plot_ax(ax, day, level)
+
+    def plot_ax(self, ax, day, level):
+        ax.contourf(self.data.lons, self.data.lats, self.data.hgts[day,level,...], cmap='YlOrRd', levels=10)
+        ax.plot(self.data.lons, self.grad_lines[day, level])
+        ax.scatter(
+            self.trough_lons[day][level], 
+            self.trough_lats[day][level],
+            marker='x',s=100
+        )
+        ax.scatter(
+            self.peak_lons[day][level], 
+            self.peak_lats[day][level],
+            marker='x',s=100, c='purple'
+        )
+        return ax
+
+    def plot_grads(self, day, level):
+        fig, ax = plt.subplots()
+        return fig, self.plot_grads_ax(ax, day, level)
+    
+    def plot_grads_ax(self, ax, day, level):
+        ax.contourf(self.data.lons, self.data.lats, self.data.grads[day,level,...], levels=10)
+        ax.plot(self.data.lons, self.grad_lines[day, level])
+        ax.scatter(
+            self.trough_lons[day][level], 
+            self.trough_lats[day][level],
+            marker='x',s=100
+        )
+        ax.scatter(
+            self.peak_lons[day][level], 
+            self.peak_lats[day][level],
+            marker='x',s=100
+        )
+        return ax
+
